@@ -1,4 +1,4 @@
-import run_os
+from configs_scri import run_os
 import re
 
 
@@ -20,9 +20,9 @@ def get_cnpj(cnpj_re, digit=False):
             return "Invalid CNPJ![3]"
 
     if digit:
-        return pass_cnpj
+        return str(pass_cnpj)
     else:
-        return pass_cnpj[0:12]
+        return str(pass_cnpj[0:12])
 
 
 def calc_first_dig(cnpj):
@@ -40,32 +40,35 @@ def calc_first_dig(cnpj):
     if first_number > 9:
         first_number = 0
 
-    return cnpj + str(first_number)
+    return str(cnpj) + str(first_number)
 
 
 def calc_second_dig(cnpj):
-    cnpj = calc_first_dig(cnpj)
+    cnpj = str(calc_first_dig(cnpj))
     cont = 6
     soma_num = 0
     for num in cnpj:
         if cont < 2:
             cont = 9
-        soma_num += (int(num) * cont)
+        num = int(num)
+        soma_num += (num * cont)
         cont -= 1
 
-    first_number = 11 - (soma_num % 11)
+    second_number = 11 - (soma_num % 11)
 
-    if first_number > 9:
-        first_number = 0
+    if second_number > 9:
+        second_number = 0
 
-    return cnpj + str(first_number)
+    return cnpj + str(second_number)
 
 
 def run_valid():
     run_os.os_run("cls")
     cnpj = input("Insert CNPJ: ")
-    cnpj_rec = get_cnpj(cnpj, digit=True)
-    cnpj_calc = calc_second_dig(cnpj)
+    cnpj_rec = get_cnpj(str(cnpj), digit=True)
+    if cnpj_rec.startswith("Inva"):
+        return "CNPJ Invalid!"
+    cnpj_calc = calc_second_dig(str(cnpj))
     if cnpj_rec == cnpj_calc:
         return "CNPJ Valid!"
     else:
@@ -73,4 +76,4 @@ def run_valid():
 
 
 if __name__ == '__main__':
-    run_valid()
+    print(run_valid())
