@@ -1,8 +1,10 @@
 from configs_scri import validador
 import random
+from configs_scri import run_os
 
 
 def run_gerador():
+    run_os.os_run("cls")
     numbers = [str(random.randint(10, 99)), str(random.randint(100, 999)), str(random.randint(100, 999)),
                str(random.randint(1000, 9999))]
 
